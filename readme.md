@@ -1,39 +1,107 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/cnvs/assets/master/logo.png" width="240">
+    <br>
+    <img src="https://raw.githubusercontent.com/cnvs/art/master/github-header.png" width="400">
 </p>
+
 <p align="center">
-    <a href="https://travis-ci.org/cnvs/canvas"><img src="https://travis-ci.org/cnvs/canvas.svg?branch=master" alt="Build Status"></a>
-    <a href="https://styleci.io/repos/52815899"><img src="https://styleci.io/repos/52815899/shield?style=flat&branch=master" alt="StyleCI"></a>
-    <a href="https://packagist.org/packages/cnvs/easel"><img src="https://poser.pugx.org/cnvs/easel/downloads" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/cnvs/easel"><img src="https://poser.pugx.org/cnvs/easel/v/stable" alt="Latest Stable Version"></a>
-    <a href="https://github.com/cnvs/canvas/blob/master/license"><img src="https://poser.pugx.org/cnvs/canvas/license" alt="License"></a>
+	<a href="https://travis-ci.org/cnvs/canvas"><img src="https://travis-ci.org/cnvs/canvas.svg?branch=master"></a>
+	<a href="https://packagist.org/packages/cnvs/canvas"><img src="https://poser.pugx.org/cnvs/canvas/downloads"></a>
+	<a href="https://packagist.org/packages/cnvs/canvas"><img src="https://poser.pugx.org/cnvs/canvas/v/stable"></a>
+	<a href="https://packagist.org/packages/cnvs/canvas"><img src="https://poser.pugx.org/cnvs/canvas/license"></a>
+    <br><br>
 </p>
 
-## About Canvas
+## Introduction
 
-[Canvas](https://cnvs.io) is a simple, powerful blog publishing platform that lets you to share your stories with the world. Its beautifully designed interface and completely customizable framework allows you to create and publish your own blog, giving you tools that make it easy and even fun to do. Canvas includes some of the most popular web packages today, such as:
+A [Laravel](https://laravel.com) publishing platform. Canvas is a fully open source package to extend your 
+application and get you up-and-running with a blog in just a few minutes. In addition to a distraction-free 
+writing experience, you can view monthly trends on your content, get insights into reader traffic and more!
 
-* [Google Material Design](https://material.google.com).
-* [SimpleMDE](https://simplemde.com) for markdown publishing.
-* Syntax highlighting by [PrismJS](http://prismjs.com).
-* Full-site searching by [TNTSearch](https://github.com/teamtnt/laravel-scout-tntsearch-driver).
-* Native [Google Analytics](https://www.google.com/analytics/#?modal_active=none) integration.
-* Powered by [Laravel 5](https://laravel.com).
+## Installation
 
-Not quite sure if Canvas is the right tool for you? That's no problem. We've got a live demo at [http://demo.cnvs.io](http://demo.cnvs.io) where you can experience it for yourself. Login credentials for the demo are `admin@cnvs.io` and `password`.
+> **Note:** Canvas requires you to have user authentication in place prior to installation. You may run the `make:auth` Artisan command to satisfy this requirement.
 
-## Canvas Sponsors
+You may use composer to install Canvas into your Laravel project:
 
-Canvas is an MIT-licensed open source project. Its ongoing development is made possible thanks to the support by these awesome [backers](https://github.com/cnvs/canvas/blob/develop/backers.md). If you are interested in becoming a sponsor, please visit the [Canvas Patreon page](https://www.patreon.com/canvas).
+```bash
+composer require cnvs/canvas
+```
 
-## Contributing
+Publish the assets and primary configuration file using the `canvas:install` Artisan command:
 
-Thank you for considering contributing to Canvas! The contribution guide can be found in the [Canvas documentation](https://cnvs.readme.io/docs/contributing).
+```bash
+php artisan canvas:install
+```
 
-## Changelog
+Create a symbolic link to ensure file uploads are publicly accessible from the web using the `storage:link` Artisan command:
 
-Detailed changes for each release are documented in the [changelog](https://cnvs.readme.io/docs/changelog).
+```bash
+php artisan storage:link
+```
+
+## Configuration
+
+> **Note:** The following steps are optional configurations, you are not required to complete them.
+
+**Want to get started fast?** Just run `php artisan canvas:setup` after installing Canvas. A `--data` option may also be included in the command to generate demo data. Then, navigate your browser to `http://your-app.test/blog` or any other URL that is assigned to your application. This command scaffolds a default frontend for your entire blog!
+
+
+If you want to include [Unsplash](https://unsplash.com) images in your post content, set up a new application at [https://unsplash.com/oauth/applications](https://unsplash.com/oauth/applications). Grab your access key and update `config/canvas.php`:
+
+```php
+'unsplash' => [
+    'access_key' => env('CANVAS_UNSPLASH_ACCESS_KEY'),
+],
+```
+
+**Want a weekly summary?** Canvas provides support for a weekly e-mail that gives you quick stats of the content you've authored, delivered straight to your inbox. Once your application is [configured for sending mail](https://laravel.com/docs/5.8/mail), update `config/canvas.php`:
+
+```php
+'mail' => [
+    'enabled' => env('CANVAS_MAIL_ENABLED', false),
+],
+```
+
+Since the weekly digest runs on [Laravel's Scheduler](https://laravel.com/docs/5.8/scheduling#introduction), you'll need to add the following cron entry to your server:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+## Updates
+
+You may update your Canvas installation using composer:
+
+```bash
+composer update
+```
+
+Run any new migrations using the `migrate` Artisan command:
+
+```bash
+php artisan migrate
+```
+
+Re-publish the assets using the `canvas:publish` Artisan command:
+
+```bash
+php artisan canvas:publish
+```
+
+## Testing
+
+Run the tests with:
+
+```bash
+composer test
+```
 
 ## License
 
 Canvas is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Credits
+
+- [The team](https://github.com/orgs/cnvs/people) that continues to support and develop this project
+- Thanks to [Mohamed Said](https://themsaid.com/) and his project [Wink](https://github.com/writingink/wink) for inspring much of the design
+- Anyone who has [contributed a patch](https://github.com/cnvs/canvas/pulls) or [made a helpful suggestion](https://github.com/cnvs/canvas/issues)
